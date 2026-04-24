@@ -1,0 +1,27 @@
+# lima.yaml
+arch: "aarch64"
+images:
+  - location: "https://cloud-images.ubuntu.com/releases/noble/release/ubuntu-24.04-server-cloudimg-arm64.img"
+
+cpus: 2
+memory: "4GiB"
+disk: "20GiB"
+
+# Automatically mount your Mac's Home folder inside the VM
+# This creates the "bridge"
+mounts:
+  - location: "~"
+    writable: true
+
+# Enable Docker
+containerd:
+  system: true
+  user: true
+
+# Provisioning: This runs automatically on the first boot
+provision:
+  - mode: system
+    script: |
+      apt-get update
+      apt-get install -y docker.io docker-compose-v2
+      systemctl enable --now docker
